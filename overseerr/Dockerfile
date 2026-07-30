@@ -12,7 +12,7 @@ ENV COMMIT_TAG=v${OVERSEERR_VERSION}
 RUN \
   apk add --no-cache --virtual .build-dependencies \
     build-base=0.5-r3 \
-    python3=3.11.11-r0 \
+    python3=3.11.14-r0 \
   \
   && curl -J -L -o /tmp/overseerr.tar.gz \
       "https://github.com/sct/overseerr/archive/v${OVERSEERR_VERSION}.tar.gz" \
