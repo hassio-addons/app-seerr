@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base-nodejs:0.2.5
+ARG BUILD_FROM=ghcr.io/hassio-addons/base:21.0.2
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -11,8 +11,12 @@ ENV COMMIT_TAG=v${OVERSEERR_VERSION}
 # hadolint ignore=DL3003,DL3042
 RUN \
   apk add --no-cache --virtual .build-dependencies \
-    build-base=0.5-r3 \
-    python3=3.11.11-r0 \
+    build-base=0.5-r4 \
+    python3=3.14.7-r1 \
+  \
+  && apk add --no-cache \
+    nodejs=24.18.1-r0 \
+    yarn=1.22.22-r1 \
   \
   && curl -J -L -o /tmp/overseerr.tar.gz \
       "https://github.com/sct/overseerr/archive/v${OVERSEERR_VERSION}.tar.gz" \
