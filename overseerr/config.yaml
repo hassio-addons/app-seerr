@@ -4,13 +4,11 @@ version: dev
 slug: overseerr
 description: Request management and media discovery tool for the Plex ecosystem
 url: https://github.com/hassio-addons/addon-overseerr/tree/main/README.md
-codenotary: codenotary@frenck.dev
 webui: http://[HOST]:[PORT:5055]
 init: false
 arch:
   - aarch64
   - amd64
-  - armv7
 map:
   - addon_config:rw
   - share:rw
