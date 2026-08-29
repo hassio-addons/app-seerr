@@ -6,7 +6,7 @@ FROM ${BUILD_FROM}
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base
-ARG OVERSEERR_VERSION=1.33.2
+ARG OVERSEERR_VERSION=1.35.0
 ENV COMMIT_TAG=v${OVERSEERR_VERSION}
 # hadolint ignore=DL3003,DL3042
 RUN \
