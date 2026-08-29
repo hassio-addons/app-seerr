@@ -1,15 +1,19 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Home Assistant Community App: Overseerr
-# Runs Overseerr
+# Home Assistant Community App: Seerr
+# Runs Seerr
 # ==============================================================================
 export NODE_ENV=production
 export HOST="0.0.0.0"
 export PORT=5055
 export CONFIG_DIRECTORY="/config"
 
-bashio::log.info 'Starting Overseerr...'
+bashio::log.info 'Starting Seerr...'
+
+# Marks the configuration directory as being provided by the container,
+# which stops Seerr from warning about a missing data volume.
+touch "${CONFIG_DIRECTORY}/DOCKER"
 
 cd /opt || bashio::exit.nok 'Could not change directory to /opt'
-exec yarn start
+exec node dist/index.js

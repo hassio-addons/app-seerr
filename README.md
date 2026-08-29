@@ -1,4 +1,4 @@
-# Home Assistant Community App: Overseerr
+# Home Assistant Community App: Seerr
 
 [![GitHub Release][releases-shield]][releases]
 ![Project Stage][project-stage-shield]
@@ -8,16 +8,24 @@
 ![Project Maintenance][maintenance-shield]
 [![GitHub Activity][commits-shield]][commits]
 
-Request management and media discovery tool for the Plex ecosystem.
+Media request and discovery manager for Jellyfin, Plex, and Emby.
 
 ## About
 
-[Overseerr] is a multi-platform binary newsgroup downloader. The program works in
-the background and simplifies the downloading verifying and extracting of files
-from [Usenet].
+[Seerr] is an open-source media request and discovery manager. It integrates
+with your existing [Jellyfin], [Plex] or [Emby] server, and with [Radarr] and
+[Sonarr] for movie and TV content management, so your users can find and
+request the content they want to watch.
 
-[Overseerr]: https://overseerr.dev/
-[Usenet]: http://en.wikipedia.org/wiki/Usenet
+Seerr is the continuation of Overseerr and Jellyseerr, which have been merged
+into a single project under a new name.
+
+[Emby]: https://emby.media/
+[Jellyfin]: https://jellyfin.org/
+[Plex]: https://plex.tv/
+[Radarr]: https://radarr.video/
+[Seerr]: https://seerr.dev/
+[Sonarr]: https://sonarr.tv/
 
 [:books: Read the full app documentation][docs]
 
@@ -84,21 +92,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-[commits-shield]: https://img.shields.io/github/commit-activity/y/hassio-addons/app-overseerr.svg
-[commits]: https://github.com/hassio-addons/app-overseerr/commits/main
-[contributors]: https://github.com/hassio-addons/app-overseerr/graphs/contributors
+[commits-shield]: https://img.shields.io/github/commit-activity/y/hassio-addons/app-seerr.svg
+[commits]: https://github.com/hassio-addons/app-seerr/commits/main
+[contributors]: https://github.com/hassio-addons/app-seerr/graphs/contributors
 [discord-ha]: https://discord.gg/c5DvZ4e
 [discord]: https://discord.me/hassioaddons
-[docs]: https://github.com/hassio-addons/app-overseerr/blob/main/overseerr/DOCS.md
+[docs]: https://github.com/hassio-addons/app-seerr/blob/main/seerr/DOCS.md
 [forum]: https://community.home-assistant.io/t/?u=frenck
 [frenck]: https://github.com/frenck
-[github-actions-shield]: https://github.com/hassio-addons/app-overseerr/workflows/CI/badge.svg
-[github-actions]: https://github.com/hassio-addons/app-overseerr/actions
-[issue]: https://github.com/hassio-addons/app-overseerr/issues
-[license-shield]: https://img.shields.io/github/license/hassio-addons/app-overseerr.svg
+[github-actions-shield]: https://github.com/hassio-addons/app-seerr/workflows/CI/badge.svg
+[github-actions]: https://github.com/hassio-addons/app-seerr/actions
+[issue]: https://github.com/hassio-addons/app-seerr/issues
+[license-shield]: https://img.shields.io/github/license/hassio-addons/app-seerr.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2026.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-experimental-yellow.svg
 [reddit]: https://reddit.com/r/homeassistant
-[releases-shield]: https://img.shields.io/github/release/hassio-addons/app-overseerr.svg
-[releases]: https://github.com/hassio-addons/app-overseerr/releases
+[releases-shield]: https://img.shields.io/github/release/hassio-addons/app-seerr.svg
+[releases]: https://github.com/hassio-addons/app-seerr/releases
 [repository]: https://github.com/hassio-addons/repository
