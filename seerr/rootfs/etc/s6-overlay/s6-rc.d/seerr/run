@@ -5,7 +5,6 @@
 # Runs Seerr
 # ==============================================================================
 export NODE_ENV=production
-export HOST="0.0.0.0"
 export PORT=5055
 export CONFIG_DIRECTORY="/config"
 
@@ -15,5 +14,10 @@ bashio::log.info 'Starting Seerr...'
 # which stops Seerr from warning about a missing data volume.
 touch "${CONFIG_DIRECTORY}/DOCKER"
 
+# HOST is deliberately left unset. Seerr binds to a single address when it is
+# set, so setting it to 0.0.0.0 leaves the server on IPv4 only, and the
+# requests Seerr makes to itself fail whenever localhost resolves to ::1.
+# Unset, Node listens on both stacks, and falls back to IPv4 on its own when
+# IPv6 is unavailable.
 cd /opt || bashio::exit.nok 'Could not change directory to /opt'
 exec node dist/index.js
