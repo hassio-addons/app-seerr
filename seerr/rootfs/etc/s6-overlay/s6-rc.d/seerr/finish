@@ -1,15 +1,15 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Home Assistant Community App: Overseerr
-# Take down the S6 supervision tree when Overseerr fails
+# Home Assistant Community App: Seerr
+# Take down the S6 supervision tree when Seerr fails
 # ==============================================================================
 declare exit_code_container
 exit_code_container=$(</run/s6-linux-init-container-results/exitcode)
 readonly exit_code_container
 readonly exit_code_service="${1}"
 readonly exit_code_signal="${2}"
-readonly service="Overseerr"
+readonly service="Seerr"
 
 bashio::log.info \
   "Service ${service} exited with code ${exit_code_service}" \

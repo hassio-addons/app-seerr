@@ -22,7 +22,7 @@ discussions, or pull requests.**
 Instead, report them privately through GitHub's private vulnerability
 reporting:
 
-[**Report a vulnerability**](https://github.com/hassio-addons/app-overseerr/security/advisories/new)
+[**Report a vulnerability**](https://github.com/hassio-addons/app-seerr/security/advisories/new)
 
 If for any reason you are unable to use GitHub's private vulnerability
 reporting, you may also reach out to the maintainer by email at
@@ -55,8 +55,8 @@ The following are **not** considered security vulnerabilities in this project:
 - Vulnerabilities in upstream or transitive dependencies. These are handled
   continuously by [Renovate](https://github.com/renovatebot/renovate) and
   addressed through regular dependency updates.
-- Issues in Overseerr itself; please report those directly to the
-  [Overseerr project](https://github.com/sct/overseerr/security/policy).
+- Issues in Seerr itself; please report those directly to the
+  [Seerr project](https://github.com/seerr-team/seerr/security/policy).
 - Issues in the Home Assistant Supervisor, or in the base image this app is
   built on; please report those to the
   [Home Assistant](https://github.com/home-assistant/core/security/policy)
@@ -67,6 +67,6 @@ The following are **not** considered security vulnerabilities in this project:
 
 ## Scope
 
-This security policy covers the Overseerr app in this repository: the app
+This security policy covers the Seerr app in this repository: the app
 configuration, the container image built from it, and the service scripts that
 run inside it.

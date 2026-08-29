@@ -36,13 +36,17 @@
       "extractVersionTemplate": "^{{{package}}}-(?<version>\\d.*)\\.apk$"
     },
     {
+      "description": "libstdc++ needs its own manager: the plus signs are not valid in the generic Alpine package pattern, and the CDN percent-encodes them in the directory listing it is matched against",
       "customType": "regex",
       "fileMatch": ["/Dockerfile$"],
+      "matchStringsStrategy": "any",
       "matchStrings": [
-        "ARG OVERSEERR_VERSION=[\"']?(?<currentValue>.+?)[\"']?\\s+"
+        "\\s\\s(?<package>libstdc\\+\\+)=(?<currentValue>[a-z0-9-_.]+)\\s+"
       ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "sct/overseerr"
+      "versioningTemplate": "loose",
+      "datasourceTemplate": "custom.alpine",
+      "depNameTemplate": "alpine_3_24/{{package}}",
+      "extractVersionTemplate": "^libstdc%2B%2B-(?<version>\\d.*)\\.apk$"
     }
   ],
   "packageRules": [
@@ -51,21 +55,21 @@
       "automerge": true
     },
     {
-      "description": "Packages that live in the Alpine community repository",
-      "matchDatasources": ["custom.alpine"],
-      "matchPackageNames": ["alpine_3_24/yarn"],
-      "registryUrls": [
-        "https://dl-cdn.alpinelinux.org/alpine/v3.24/community/x86_64/"
-      ]
-    },
-    {
       "groupName": "App base image",
-      "matchDatasources": ["docker"]
+      "matchDatasources": ["docker"],
+      "matchDepNames": ["ghcr.io/hassio-addons/base"]
     },
     {
       "groupName": "App base image",
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "matchDepNames": ["ghcr.io/hassio-addons/base"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepNames": ["ghcr.io/seerr-team/seerr"],
       "automerge": true
     }
   ]
