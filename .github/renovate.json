@@ -6,12 +6,6 @@
   "labels": ["dependencies", "no-stale"],
   "commitMessagePrefix": "⬆️",
   "commitMessageTopic": "{{depName}}",
-  "customDatasources": {
-    "alpine": {
-      "defaultRegistryUrlTemplate": "https://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/",
-      "format": "html"
-    }
-  },
   "customManagers": [
     {
       "customType": "regex",
@@ -28,48 +22,51 @@
       "fileMatch": ["/Dockerfile$"],
       "matchStringsStrategy": "any",
       "matchStrings": [
-        "\\s\\s(?<package>[a-z0-9][a-z0-9-_]+)=(?<currentValue>[a-z0-9-_.]+)\\s+"
+        "\\s\\s(?<package>[a-z0-9][a-z0-9+.-]+)=(?<currentValue>[a-z0-9-:_+~.]+)\\s+"
       ],
-      "versioningTemplate": "loose",
-      "datasourceTemplate": "custom.alpine",
-      "depNameTemplate": "alpine_3_24/{{package}}",
-      "extractVersionTemplate": "^{{{package}}}-(?<version>\\d.*)\\.apk$"
+      "versioningTemplate": "deb",
+      "datasourceTemplate": "deb",
+      "depNameTemplate": "{{{package}}}"
     },
     {
-      "description": "libstdc++ needs its own manager: the plus signs are not valid in the generic Alpine package pattern, and the CDN percent-encodes them in the directory listing it is matched against",
       "customType": "regex",
       "fileMatch": ["/Dockerfile$"],
-      "matchStringsStrategy": "any",
       "matchStrings": [
-        "\\s\\s(?<package>libstdc\\+\\+)=(?<currentValue>[a-z0-9-_.]+)\\s+"
+        "ARG SEERR_VERSION=[\"']?(?<currentValue>.+?)[\"']?\\s+"
       ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "seerr-team/seerr",
       "versioningTemplate": "loose",
-      "datasourceTemplate": "custom.alpine",
-      "depNameTemplate": "alpine_3_24/{{package}}",
-      "extractVersionTemplate": "^libstdc%2B%2B-(?<version>\\d.*)\\.apk$"
+      "extractVersionTemplate": "^v(?<version>.*)$"
     }
   ],
   "packageRules": [
     {
-      "matchDatasources": ["custom.alpine"],
+      "matchDatasources": ["deb"],
+      "registryUrls": [
+        "https://deb.debian.org/debian?suite=trixie&components=main&binaryArch=amd64",
+        "https://deb.debian.org/debian?suite=trixie-updates&components=main&binaryArch=amd64",
+        "https://deb.debian.org/debian-security?suite=trixie-security&components=main&binaryArch=amd64"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "nodejs is pinned from the NodeSource repository, not Debian",
+      "matchDatasources": ["deb"],
+      "matchDepNames": ["nodejs"],
+      "registryUrls": [
+        "https://deb.nodesource.com/node_22.x?suite=nodistro&components=main&binaryArch=amd64"
+      ],
       "automerge": true
     },
     {
       "groupName": "App base image",
-      "matchDatasources": ["docker"],
-      "matchDepNames": ["ghcr.io/hassio-addons/base"]
+      "matchDatasources": ["docker"]
     },
     {
       "groupName": "App base image",
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true,
-      "matchDepNames": ["ghcr.io/hassio-addons/base"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchDepNames": ["ghcr.io/seerr-team/seerr"],
       "automerge": true
     }
   ]

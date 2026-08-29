@@ -1,39 +1,83 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base:21.0.3
-
-###############################################################################
-# Get prebuilt containers from Seerr
-###############################################################################
-FROM ghcr.io/seerr-team/seerr:v3.4.1 AS seerr
-
-###############################################################################
-# Build the actual app.
-###############################################################################
+ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:9.4.0
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Get Seerr, and the Node.js runtime it is built against, from the official
-# images. Seerr ships native modules that are bound to that exact Node.js
-# version, so the two cannot be separated.
-COPY --from=seerr /usr/local/bin/node /usr/local/bin/node
-COPY --from=seerr /app /opt
-
 # Setup base
+ARG SEERR_VERSION=3.4.1
+ENV COMMIT_TAG=v${SEERR_VERSION}
+ENV NEXT_TELEMETRY_DISABLED=1
+# hadolint ignore=DL3003,DL3016
 RUN \
-  apk add --no-cache \
-    libstdc++=15.2.0-r5 \
-  \
-  && rm -f -r \
-    /opt/compose.postgres.yaml \
-    /opt/cypress.config.ts \
-    /opt/devenv.lock \
-    /opt/devenv.nix \
-    /opt/devenv.yaml \
-    /opt/eslint.config.mts \
-    /opt/server \
-    /opt/src
+    apt-get update \
+    && apt-get install -y --no-install-recommends \
+        gpg=2.4.7-21+deb13u1+b4 \
+    \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+        | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" \
+        > /etc/apt/sources.list.d/nodesource.list \
+    \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        nodejs=22.23.2-1nodesource1 \
+    \
+    && apt-get install -y --no-install-recommends \
+        build-essential=12.12 \
+    \
+    && curl -J -L -o /tmp/seerr.tar.gz \
+        "https://github.com/seerr-team/seerr/archive/v${SEERR_VERSION}.tar.gz" \
+    && tar zxf \
+        /tmp/seerr.tar.gz \
+        --strip 1 -C /opt \
+    \
+    && cd /opt \
+    && npm install --global "$(node -p 'require("/opt/package.json").packageManager')" \
+    && CI=true CYPRESS_INSTALL_BINARY=0 pnpm install --frozen-lockfile \
+    && pnpm build \
+    && CI=true pnpm install --prod --frozen-lockfile \
+    && pnpm store prune \
+    \
+    && echo "{\"commitTag\": \"${COMMIT_TAG}\"}" > "/opt/committag.json" \
+    \
+    && find /opt/node_modules/.pnpm -maxdepth 1 -type d -name '*musl*' \
+        -exec rm -f -r {} + \
+    && find /opt/node_modules/.pnpm -type d \( \
+        -path '*ace-builds/src' -o \
+        -path '*ace-builds/src-min' -o \
+        -path '*ace-builds/src-noconflict' -o \
+        -path '*country-flag-icons/1x1' -o \
+        -path '*country-flag-icons/react' -o \
+        -path '*country-flag-icons/string' -o \
+        -path '*@heroicons/react/16' \
+        \) -exec rm -f -r {} + \
+    \
+    && npm cache clean --force \
+    \
+    && apt-get purge -y --auto-remove \
+        build-essential \
+        gpg \
+    \
+    && rm -f -r \
+        /opt/.next/cache \
+        /opt/cypress \
+        /opt/cypress.config.ts \
+        /opt/devenv.lock \
+        /opt/devenv.nix \
+        /opt/devenv.yaml \
+        /opt/docs \
+        /opt/eslint.config.mts \
+        /opt/gen-docs \
+        /opt/server \
+        /opt/src \
+        /root/{.cache,.config,.gnupg,.local,.npm} \
+        /tmp/* \
+        /var/{cache,log}/* \
+        /var/lib/apt/lists/*
 
 # Copy root filesystem
 COPY rootfs /
