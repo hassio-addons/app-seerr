@@ -24,7 +24,7 @@ RUN \
     \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        nodejs=22.23.2-1nodesource1 \
+        nodejs=22.23.3-1nodesource1 \
     \
     && apt-get install -y --no-install-recommends \
         build-essential=12.12 \
