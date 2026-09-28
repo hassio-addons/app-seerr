@@ -6,7 +6,7 @@ FROM ${BUILD_FROM}
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base
-ARG SEERR_VERSION=3.4.1
+ARG SEERR_VERSION=3.5.0
 ENV COMMIT_TAG=v${SEERR_VERSION}
 ENV NEXT_TELEMETRY_DISABLED=1
 # hadolint ignore=DL3003,DL3016
